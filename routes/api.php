@@ -56,7 +56,7 @@ Route::delete('/users/{id}', [UserInfoController::class, 'deleteUser']);
 
 Route::get('/users/{id}', [UserInfoController::class, 'getUser'])
 ->name('oneUserEdit');
-Route::post('/users/{id}', [UserInfoController::class, 'updateUser']);
+Route::put('/users/{id}', [UserInfoController::class, 'updateUser']);
 
 // Cart Routes
 Route::get('/cart', [UserCartController::class, 'getCartProducts'])
@@ -81,6 +81,10 @@ Route::delete('/customer/orders/{invId}', [UserInvoiceController::class, 'delete
 // Pharmacy Invoice
 Route::get('/pharmacy/{branchId}/orders', [UserInvoiceController::class, 'getAllInvoicesPharmacy'])
 ->name('allOrdersPharmacy');
+
+// Product Search
+Route::get('/products/search', [productinfoController::class, 'searchProduct'])
+->name('productSearch');
 
 Route::apiResource('staff', 'App\Http\Controllers\PocketPills\Staff');
 Route::apiResource('branchproduct', 'App\Http\Controllers\PocketPills\BranchProduct');

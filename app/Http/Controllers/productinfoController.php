@@ -149,4 +149,14 @@ class productinfoController extends Controller
              ->delete();
         return response()->json(['message'=>'Success'],200);
     }
+
+    public function searchProduct(Request $request){
+        // dd($request);
+        $searchFor = $request->productName;
+        $result = DB::table('productinfo')
+                        ->select('productinfo.*')
+                        ->where('productinfo.productName', 'like', "%{$searchFor}%")
+                        ->get();
+        return response()->json(['result'=>$result],200);
+    }
 }

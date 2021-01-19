@@ -18,7 +18,7 @@ class UserInvoiceController extends Controller
         ->join('userInfo', 'userInfo.userId', 'userInv.userId')
         ->join('productInfo', 'productInfo.productCode', 'invoiceDetails.productCode')
         ->select('userInv.*', 'productInfo.*', 'invoiceDetails.productQuantity')
-        ->where('userInfo.userId', '=', 4)
+        ->where('userInfo.userId', '=', 1)
         ->orderBy('invDate', 'desc')
         ->get();
     }
