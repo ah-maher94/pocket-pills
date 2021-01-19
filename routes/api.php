@@ -9,6 +9,10 @@ use App\Http\Controllers\User\UserInfoController;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserInvoiceController;
 
+use App\Http\Controllers\productinfoController;
+use App\Http\Controllers\categoryController;
+use App\Http\Controllers\supplierController;
+use App\Http\Controllers\productsupplierController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -71,3 +75,12 @@ Route::delete('/customer/orders/{invId}', [UserInvoiceController::class, 'delete
 // Pharmacy Invoice
 Route::get('/pharmacy/{branchId}/orders', [UserInvoiceController::class, 'getAllInvoicesPharmacy'])
 ->name('allOrdersPharmacy');
+
+Route::resource('products',App\Http\Controllers\productinfoController::class);
+
+Route::resource('category',App\Http\Controllers\categoryController::class);
+
+Route::resource('suppliers',App\Http\Controllers\supplierController::class);
+
+Route::resource('productsupplier',App\Http\Controllers\productsupplierController::class);
+
