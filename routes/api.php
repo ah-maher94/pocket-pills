@@ -14,6 +14,11 @@ use App\Http\Controllers\PocketPills\BranchProduct;
 use App\Http\Controllers\PocketPills\Branch;
 use App\Http\Controllers\PocketPills\Pharmacy;
 
+
+use App\Http\Controllers\productinfoController;
+use App\Http\Controllers\categoryController;
+use App\Http\Controllers\supplierController;
+use App\Http\Controllers\productsupplierController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -81,3 +86,11 @@ Route::apiResource('staff', 'App\Http\Controllers\PocketPills\Staff');
 Route::apiResource('branchproduct', 'App\Http\Controllers\PocketPills\BranchProduct');
 Route::apiResource('branch', 'App\Http\Controllers\PocketPills\Branch');
 Route::apiResource('pharmacy', 'App\Http\Controllers\PocketPills\Pharmacy');
+Route::resource('products',App\Http\Controllers\productinfoController::class);
+
+Route::resource('category',App\Http\Controllers\categoryController::class);
+
+Route::resource('suppliers',App\Http\Controllers\supplierController::class);
+
+Route::resource('productsupplier',App\Http\Controllers\productsupplierController::class);
+
