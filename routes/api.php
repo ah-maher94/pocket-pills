@@ -9,6 +9,12 @@ use App\Http\Controllers\User\UserInfoController;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserInvoiceController;
 
+use App\Http\Controllers\PocketPills\Staff;
+use App\Http\Controllers\PocketPills\BranchProduct;
+use App\Http\Controllers\PocketPills\Branch;
+use App\Http\Controllers\PocketPills\Pharmacy;
+
+
 use App\Http\Controllers\productinfoController;
 use App\Http\Controllers\categoryController;
 use App\Http\Controllers\supplierController;
@@ -76,6 +82,10 @@ Route::delete('/customer/orders/{invId}', [UserInvoiceController::class, 'delete
 Route::get('/pharmacy/{branchId}/orders', [UserInvoiceController::class, 'getAllInvoicesPharmacy'])
 ->name('allOrdersPharmacy');
 
+Route::apiResource('staff', 'App\Http\Controllers\PocketPills\Staff');
+Route::apiResource('branchproduct', 'App\Http\Controllers\PocketPills\BranchProduct');
+Route::apiResource('branch', 'App\Http\Controllers\PocketPills\Branch');
+Route::apiResource('pharmacy', 'App\Http\Controllers\PocketPills\Pharmacy');
 Route::resource('products',App\Http\Controllers\productinfoController::class);
 
 Route::resource('category',App\Http\Controllers\categoryController::class);
