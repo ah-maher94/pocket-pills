@@ -153,9 +153,13 @@ class productinfoController extends Controller
     public function searchProduct(Request $request){
         // dd($request);
         $searchFor = $request->productName;
+        $branchId = $request->branchId;
         $result = DB::table('productinfo')
+                        ->join('branchProduct', 'productinfo.productCode', 'branchProduct.productCode')
+                        ->join('branchInfo', 'branchInfo.branchId', 'branchProduct.branchId')
                         ->select('productinfo.*')
                         ->where('productinfo.productName', 'like', "%{$searchFor}%")
+                        ->where('branchInfo.branchId', '=', $branchId)
                         ->get();
         return response()->json(['result'=>$result],200);
     }

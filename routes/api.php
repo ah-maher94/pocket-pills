@@ -83,7 +83,7 @@ Route::get('/pharmacy/{branchId}/orders', [UserInvoiceController::class, 'getAll
 ->name('allOrdersPharmacy');
 
 // Product Search
-Route::get('/products/search', [productinfoController::class, 'searchProduct'])
+Route::post('/products/search', [productinfoController::class, 'searchProduct'])
 ->name('productSearch');
 
 Route::apiResource('staff', 'App\Http\Controllers\PocketPills\Staff');
