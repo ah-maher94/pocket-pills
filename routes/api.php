@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\User\UserInfoController;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserInvoiceController;
+use App\Http\Controllers\Auth\AuthController;
 
 use App\Http\Controllers\PocketPills\Staff;
 use App\Http\Controllers\PocketPills\BranchProduct;
