@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\User\UserInfoController;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserInvoiceController;
-use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\PocketPills\Staff;
 use App\Http\Controllers\PocketPills\BranchProduct;
@@ -38,7 +38,7 @@ Route::group([
 
 ], function ($router) {
 
-    Route::post('login', 'App\Http\Controllers\Auth\AuthController@login');
+    Route::post('login', 'App\Http\Controllers\AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
