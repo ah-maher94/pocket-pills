@@ -59,5 +59,3 @@ class UserInfo extends Authenticatable implements JWTSubject
         return [];
     }
 }
-
-}
