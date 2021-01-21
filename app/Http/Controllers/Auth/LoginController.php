@@ -13,10 +13,6 @@ class LoginController extends Controller
         $this->middleware(["guest"]);
     }
 
-    public function login(){
-        return view('auth.login');
-    }
-
     public function loggedIn(Request $request){
         $this->validate($request,[
             "userEmail"=>"required|email",
