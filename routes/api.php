@@ -30,21 +30,34 @@ use App\Http\Controllers\productsupplierController;
 |
 */
 
+// Auth
+Route::group([
+
+    'middleware' => 'api',
+
+], function ($router) {
+
+    Route::post('login', 'App\Http\Controllers\Auth\AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 // Auth
-Route::post('/register', [RegisterController::class, 'store'])
-->name('register');
+// Route::post('/register', [RegisterController::class, 'store'])
+// ->name('register');
 
-Route::get('/login', [LoginController::class, 'login'])
-->name('login');
-Route::post('/login', [LoginController::class, 'loggedIn']);
+// Route::post('/login', [LoginController::class, 'loggedIn'])
+// ->name('login');
 
-Route::get('/logout', [LogoutController::class, 'logout'])
-->name('logout');
+// Route::get('/logout', [LogoutController::class, 'logout'])
+// ->name('logout');
 
 // User Routes
 Route::get('/users', [UserInfoController::class, 'getAllUsers'])

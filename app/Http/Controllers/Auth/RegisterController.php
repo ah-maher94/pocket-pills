@@ -17,6 +17,7 @@ class RegisterController extends Controller
 
     public function store(Request $request){
 
+
         // validate form
         $this->validate($request, [
             "userName" => "required|min:5|max:255",
@@ -38,24 +39,28 @@ class RegisterController extends Controller
                 "userPhone"=>$request->userPhone,
             ]);
 
-            
             // get last inserted id
             $userId = $id = DB::getPdo()->lastInsertId();
-            
+
             // insert user locations
-            $locations=$request->userLocation;
-            $locationsArray = array();
-            foreach($locations as $location)
-            {
-                if(!empty($location))
-                {
-                $locationsArray[] =[
-                        'userId' => $userId,
-                        'userLocation' => $location,
-                        ];                 
-                }
-            }
-            DB::table('userLocation')->insert($locationsArray);
+            DB::table('userLocation')->insert([
+                "userId"=>$userId,
+                "userLocation"=>$request->userLocation,
+            ]);
+
+            // $locations=$request->userLocation;
+            // $locationsArray = array();
+            // foreach($locations as $location)
+            // {
+            //     if(!empty($location))
+            //     {
+            //     $locationsArray[] =[
+            //             'userId' => $userId,
+            //             'userLocation' => $location,
+            //             ];                 
+            //     }
+            // }
+            // DB::table('userLocation')->insert($locationsArray);
 
             DB::commit();
 
