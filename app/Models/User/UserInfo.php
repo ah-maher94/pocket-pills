@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models\User;
-use Illuminate\Foundation\Auth\UserInfo as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User\UserLocation;
