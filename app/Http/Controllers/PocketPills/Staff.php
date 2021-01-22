@@ -46,12 +46,17 @@ class Staff extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
+        // $image=$request ->file('image');
+        // $filename=rand().'.'.$image->getClientOriginalExtension();
+        // $image->move(public_path('staffimages/'),$filename);
+        // $filename='staffimages/'.$filename;
         $validated = $request->validate([
             'staffName' => 'required',
             'salary' => 'required',
-            'hiringDtate' => 'required',
-            'staffCategory' => 'required',
-            'staffPhone' => 'required',
+            'hiringDate' => 'required',
+            'staffDepartment' => 'required',
+            // 'staffPhone' => 'required',
             'staffEmail' => 'required|unique:staffinfo|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
         ]);
 
@@ -81,9 +86,8 @@ class Staff extends Controller
                 'branchId' => $request['branchId'],
                 'staffName' => $request['staffName'],
                 'salary' => $request['salary'],
-                'firingDtate' => $request['firingDtate'],
-                'hiringDtate' => $request['hiringDtate'],
-                'staffCategory' => $request['staffCategory'],
+                'hiringDate' => $request['hiringDate'],
+                'staffDepartment' => $request['staffDepartment'],
                 'staffEmail' => $request['staffEmail'],
                 ));
 
@@ -96,13 +100,8 @@ class Staff extends Controller
            
 
         }
-       
-        else{
-            return back();
-        }
-       
 
-
+        return response()->json(['message'=>"success"],200);
     }
 
     /**

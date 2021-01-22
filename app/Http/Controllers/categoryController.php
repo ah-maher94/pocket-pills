@@ -6,6 +6,8 @@ use App\Models\category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Models\cart;
+
 class categoryController extends Controller
 {
     /**
@@ -16,7 +18,31 @@ class categoryController extends Controller
     public function index()
     {
         $categorys=category::all();
+        
+        // for ($i=0; $i < count($categorys); $i++) { 
+        //     # code...
+        //     $temp=$categorypath;
+        //     // $temp.=`\`;
+        //     $temp.=$categorys[$i]['categoryImage'];
+        //     $categorys[$i]['categoryImage']=$temp;
+        // }
         return $categorys;
+        // return ;
+    }
+     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addProduct(Request $request){
+        cart::create([
+            'userId'=>$request['userId'],
+            'productCode'=>$request['productCode'],
+            'productQuantity'=>$request['productQuantity'],
+            'branchId'=>$request['branchId'],
+        ]);
+        return response()->json(['message'=>'Success'],200);
     }
     /**
      * Store a newly created resource in storage.

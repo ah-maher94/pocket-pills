@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\User\UserInfoController;
 use App\Http\Controllers\User\UserCartController;
 use App\Http\Controllers\User\UserInvoiceController;
-use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\PocketPills\Staff;
 use App\Http\Controllers\PocketPills\BranchProduct;
@@ -31,34 +30,22 @@ use App\Http\Controllers\productsupplierController;
 |
 */
 
-// Auth
-Route::group([
 
-    'middleware' => 'api',
-
-], function ($router) {
-
-    Route::post('login', 'App\Http\Controllers\AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
 });
 
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 // Auth
-// Route::post('/register', [RegisterController::class, 'store'])
-// ->name('register');
+Route::post('/register', [RegisterController::class, 'store'])
+->name('register');
 
-// Route::post('/login', [LoginController::class, 'loggedIn'])
+// Route::get('/login', [LoginController::class, 'login'])
 // ->name('login');
+Route::post('/login', [LoginController::class, 'loggedIn']);
 
-// Route::get('/logout', [LogoutController::class, 'logout'])
-// ->name('logout');
+Route::get('/logout', [LogoutController::class, 'logout'])
+->name('logout');
 
 // User Routes
 Route::get('/users', [UserInfoController::class, 'getAllUsers'])
@@ -70,17 +57,25 @@ Route::delete('/users/{id}', [UserInfoController::class, 'deleteUser']);
 
 Route::get('/users/{id}', [UserInfoController::class, 'getUser'])
 ->name('oneUserEdit');
-Route::put('/users/{id}', [UserInfoController::class, 'updateUser']);
+Route::post('/users/{id}', [UserInfoController::class, 'updateUser']);
 
 // Cart Routes
 Route::get('/cart', [UserCartController::class, 'getCartProducts'])
 ->name('cartProducts');
+
+Route::post('/cartList', [UserCartController::class, 'getProductList']);
+
+
+Route::post('/userCartList', [UserInvoiceController::class, 'addUserInvoice']);
+
+
+
 Route::post('/cart', [UserInvoiceController::class, 'addInvoice']);
 
 Route::delete('/cart/{productId}', [UserCartController::class, 'deleteProduct'])
 ->name('deleteCartProduct');
 
-Route::post('/cart/{productId}', [UserCartController::class, 'addProduct'])
+Route::post('/cart', [UserCartController::class, 'addProduct'])
 ->name('addCartProduct');
 Route::put('/cart/{productId}', [UserCartController::class, 'updateQuantity']);
 
@@ -96,14 +91,11 @@ Route::delete('/customer/orders/{invId}', [UserInvoiceController::class, 'delete
 Route::get('/pharmacy/{branchId}/orders', [UserInvoiceController::class, 'getAllInvoicesPharmacy'])
 ->name('allOrdersPharmacy');
 
-// Product Search
-Route::post('/products/search', [productinfoController::class, 'searchProduct'])
-->name('productSearch');
-
 Route::apiResource('staff', 'App\Http\Controllers\PocketPills\Staff');
 Route::apiResource('branchproduct', 'App\Http\Controllers\PocketPills\BranchProduct');
 Route::apiResource('branch', 'App\Http\Controllers\PocketPills\Branch');
 Route::apiResource('pharmacy', 'App\Http\Controllers\PocketPills\Pharmacy');
+
 Route::resource('products',App\Http\Controllers\productinfoController::class);
 
 Route::resource('category',App\Http\Controllers\categoryController::class);
@@ -111,4 +103,10 @@ Route::resource('category',App\Http\Controllers\categoryController::class);
 Route::resource('suppliers',App\Http\Controllers\supplierController::class);
 
 Route::resource('productsupplier',App\Http\Controllers\productsupplierController::class);
+
+Route::post('/getproduct', [productinfoController::class, 'getProduct']);
+
+Route::post('/appToCard', [categoryController::class, 'addProduct']);
+
+Route::post('/getQuantity', [productinfoController::class, 'getQuantity']);
 

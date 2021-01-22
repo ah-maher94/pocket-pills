@@ -12,15 +12,17 @@ use App\Models\BranchModel;
 
 class UserInvoiceController extends Controller
 {
-    public function getAllInvoices(){
-        return DB::table('userInv')
+    public function getAllInvoices(Request $request){
+        $userOrders =  DB::table('userInv')
         ->join('invoiceDetails', 'userInv.invNo', 'invoiceDetails.invNo')
         ->join('userInfo', 'userInfo.userId', 'userInv.userId')
         ->join('productInfo', 'productInfo.productCode', 'invoiceDetails.productCode')
-        ->select('userInv.*', 'productInfo.*', 'invoiceDetails.productQuantity')
-        ->where('userInfo.userId', '=', 1)
+        ->select('userInv.*', 'productInfo.*', 'invoiceDetails.productQuantity', 'userInfo.userName')
+        ->where('userInfo.userId', '=', $request->userId)
+        ->distinct('invoiceDetails.invNo')
         ->orderBy('invDate', 'desc')
         ->get();
+        return $userOrders;
     }
 
     public function getAllInvoicesPharmacy($branchId){
@@ -53,7 +55,7 @@ class UserInvoiceController extends Controller
             // save to db
             DB::table('userInv')->insert([
                 "invDate"=>now(),
-                "userId"=>4,
+                "userId"=>$request['userId'],
             ]);
 
             
@@ -90,6 +92,64 @@ class UserInvoiceController extends Controller
         }
     
     }
+    //added
+    public function addUserInvoice(Request $request){
+        // dd($request);
+        DB::beginTransaction();
+        try{
+            // save to db
+            DB::table('userInv')->insert([
+                "invDate"=>now(),
+                "userId"=>$request['userId'],
+            ]);
+
+            $userList= DB::table('userCart')
+                ->join('userInfo', 'userinfo.userid', 'userCart.userid')
+                ->join('productInfo', 'productInfo.productCode', 'userCart.productCode')
+                ->select('userCart.*')
+                ->where('userCart.userId', '=', $request['userId'])
+                ->get();
+            // get last inserted id
+            $decodedObject=json_decode( $userList);
+            $i=[];
+            foreach($decodedObject as $key => $value)
+            {
+                $i.push($key);
+            }
+            return $i;
+            $invId = DB::getPdo()->lastInsertId();
+            
+            // insert user locations
+            $productCode=$request->productCode;
+            $productQuantity=$request->productQuantity;
+            $branchId=$request->branchId;
+            $userCartProducts = array();
+            for($temp=0; $temp< count($productCode); $temp++)
+            {                
+                $userCartProducts[] =[
+                    'invNo'=> $invId,
+                    'productCode' => $productCode[$temp],
+                    'productQuantity' => $productQuantity[$temp],
+                    'branchId' => $branchId[$temp],
+                    ];                 
+                
+            }
+            DB::table('invoiceDetails')->insert($userCartProducts);
+
+            DB::commit();
+
+            // return redirect()->route('home');
+            return response()->json(['message' => 'success'], 200);
+
+        }catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => 'exist'], 409); 
+            // return $e;
+
+        }
+    
+    }
+
 
     public function deleteInvoice($invId){
         return DB::table('userInv')

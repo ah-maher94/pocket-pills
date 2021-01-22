@@ -27,6 +27,35 @@ class productinfoController extends Controller
         ->get();
         return $products;
     }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getProduct(Request $request )
+    {
+        return  DB::table('productinfo')
+        ->join('productimages', 'productinfo.productCode', 'productimages.productCode')
+        ->join('branchproduct', 'productinfo.productCode', 'branchproduct.productCode')
+        ->where("categoryName","=",$request['categoryName'])
+        ->select('productimages.productImage','productinfo.*','branchproduct.branchid')
+        ->get();
+    }
+     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getQuantity(Request $request )
+    {
+        return  DB::table('branchproduct')
+        ->where("productCode","=",$request['productCode'])
+        ->select('productQuantity')
+        ->get();
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,11 +67,13 @@ class productinfoController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'productCode' => 'required',
+            
             'productName' => 'required',
             'productPrice' => 'required',
             'productdescription' => 'required',
             'manufacturer' => 'required',
-            'productImage' => 'required',
+            // 'productImage' => 'required',
+            'categoryName' => 'required',
         ]);
         // // Check validation failure
         if ($validator->fails()) {
@@ -55,16 +86,17 @@ class productinfoController extends Controller
             'productName'=>$request['productName'],
             'productPrice'=>$request['productPrice'],
             'productdescription'=>$request['productdescription'],
-            'manufacturer'=>$request['manufacturer']
+            'manufacturer'=>$request['manufacturer'],
+            'categoryName'=>$request['categoryName'],
         ]);
         
         //insert new record in productimage table
-        productimage::create([
-            'productCode'=>$request['productCode'],
-            'productImage'=>$request['productImage']
-        ]);
-
-        return response()->json(['message'=>'Success'],200);
+        // productimage::create([
+        //     'productCode'=>$request['productCode'],
+        //     'productImage'=>$request['productImage']
+        // ]);
+        // return DB::table('productinfo')->latest('productCode')->first();
+        return response()->json(['message'=>$request['categoryName']],200);
     }
 
     /**
@@ -148,19 +180,5 @@ class productinfoController extends Controller
              ->where('productinfo.productCode','=',$productinfo)
              ->delete();
         return response()->json(['message'=>'Success'],200);
-    }
-
-    public function searchProduct(Request $request){
-        // dd($request);
-        $searchFor = $request->productName;
-        $branchId = $request->branchId;
-        $result = DB::table('productinfo')
-                        ->join('branchProduct', 'productinfo.productCode', 'branchProduct.productCode')
-                        ->join('branchInfo', 'branchInfo.branchId', 'branchProduct.branchId')
-                        ->select('productinfo.*')
-                        ->where('productinfo.productName', 'like', "%{$searchFor}%")
-                        ->where('branchInfo.branchId', '=', $branchId)
-                        ->get();
-        return response()->json(['result'=>$result],200);
     }
 }
