@@ -17,7 +17,7 @@ class productinfo extends Model
                         'productdescription',
                         'productNoOfSearch',
                         'manufacturer',
-                        'category_name'];
+                        'categoryName'];
     public $timestamps=false;
    
   

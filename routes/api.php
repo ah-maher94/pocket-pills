@@ -110,3 +110,4 @@ Route::post('/appToCard', [categoryController::class, 'addProduct']);
 
 Route::post('/getQuantity', [productinfoController::class, 'getQuantity']);
 
+Route::post('/departmentName', [Staff::class, 'getDepartment']);

@@ -190,4 +190,17 @@ class Staff extends Controller
             ->where('staffinfo.staffId', '=', $staffId)
             ->delete();
     }
+     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getDepartment(Request $request )
+    {
+        return  DB::table('staffdepartment')
+        ->where("branchId","=",$request['branchId'])
+        ->select('staffdepartment.departmentName')
+        ->get();
+    }
 }

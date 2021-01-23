@@ -13,6 +13,7 @@ class PharmacyModel extends Model
     protected $fillable=[
         'pharmacyId',
         'pharmacyName', 
-        'userId',      
+        'userId',     
+        'pharmacyImage'
     ];
 }
