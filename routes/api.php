@@ -60,15 +60,17 @@ Route::get('/users/{id}', [UserInfoController::class, 'getUser'])
 Route::post('/users/{id}', [UserInfoController::class, 'updateUser']);
 
 // Cart Routes
-Route::get('/cart', [UserCartController::class, 'getCartProducts'])
+Route::get('/cart/{userId}', [UserCartController::class, 'getCartProducts'])
 ->name('cartProducts');
+
+Route::get('/cart/{productId}/{userId}', [UserCartController::class, 'deleteProduct'])
+->name('deleteCartProduct');
+
+Route::get('/users/cart/{userId}', [UserCartController::class, 'clearCart']);
 
 Route::post('/cartList', [UserCartController::class, 'getProductList']);
 
-
 Route::post('/userCartList', [UserInvoiceController::class, 'addUserInvoice']);
-
-
 
 Route::post('/cart', [UserInvoiceController::class, 'addInvoice']);
 
@@ -81,7 +83,7 @@ Route::put('/cart/{productId}', [UserCartController::class, 'updateQuantity']);
 
 
 // Customer Invoice Routes
-Route::get('/customer/orders', [UserInvoiceController::class, 'getAllInvoices'])
+Route::get('/customer/{userId}/orders', [UserInvoiceController::class, 'getAllInvoices'])
 ->name('allOrders');
 Route::get('/customer/orders/{invId}', [UserInvoiceController::class, 'getInvoice'])
 ->name('oneOrder');
@@ -111,3 +113,8 @@ Route::post('/appToCard', [categoryController::class, 'addProduct']);
 Route::post('/getQuantity', [productinfoController::class, 'getQuantity']);
 
 Route::post('/departmentName', [Staff::class, 'getDepartment']);
+
+Route::get('/getproduct/{productCode}', [productinfoController::class, 'getProductInfo']);
+
+
+Route::get('/getproductquantity/{productCode}/{userId}', [productinfoController::class, 'getProductQuantity']);

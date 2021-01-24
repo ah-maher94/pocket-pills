@@ -181,4 +181,39 @@ class productinfoController extends Controller
              ->delete();
         return response()->json(['message'=>'Success'],200);
     }
+
+    public function searchProduct(Request $request){
+        // dd($request);
+        $searchFor = $request->productName;
+        $branchId = $request->branchId;
+        $result = DB::table('productinfo')
+                        ->join('branchProduct', 'productinfo.productCode', 'branchProduct.productCode')
+                        ->join('branchInfo', 'branchInfo.branchId', 'branchProduct.branchId')
+                        ->select('productinfo.*')
+                        ->where('productinfo.productName', 'like', "%{$searchFor}%")
+                        ->where('branchInfo.branchId', '=', $branchId)
+                        ->get();
+        return response()->json(['result'=>$result],200);
+    }
+
+    public function getProductInfo(Request $request){
+        return  DB::table('productinfo')
+        ->join('productimages', 'productinfo.productCode', 'productimages.productCode')
+        ->where("productinfo.productCode","=",$request->productCode)
+        ->select('productinfo.*','productimages.productImage')
+        ->get();
+    }
+
+    public function getProductQuantity(Request $request){
+        // dd($request->productCode);
+        $productQuantity =  DB::table('userCart')
+        ->select('userCart.productQuantity')
+        ->where("userCart.productCode","=",$request->productCode)
+        ->where("userCart.userId","=",$request->userId)
+        ->get();
+        // dd($productQuantity);
+        return $productQuantity;
+    }
+
+    
 }
