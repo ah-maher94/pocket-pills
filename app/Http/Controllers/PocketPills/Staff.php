@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Models\StaffModel;
+use App\Models\staffdepartment;
+
 use App\Models\Models\StaffPhoneModel;
 use Validator;
 
@@ -190,7 +192,8 @@ class Staff extends Controller
             ->where('staffinfo.staffId', '=', $staffId)
             ->delete();
     }
-     /**
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -202,5 +205,12 @@ class Staff extends Controller
         ->where("branchId","=",$request['branchId'])
         ->select('staffdepartment.departmentName')
         ->get();
+    }
+    public function postDepartment(Request $request )
+    {
+        staffdepartment::create([
+            'departmentName'=>$request['departmentName'],
+            'branchId'=>$request['branchId'],
+        ]);
     }
 }

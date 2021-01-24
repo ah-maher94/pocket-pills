@@ -118,3 +118,4 @@ Route::get('/getproduct/{productCode}', [productinfoController::class, 'getProdu
 
 
 Route::get('/getproductquantity/{productCode}/{userId}', [productinfoController::class, 'getProductQuantity']);
+Route::post('/addDepartment', [Staff::class, 'postDepartment']);
